@@ -1,0 +1,158 @@
+/* ============================================
+   AL-CHALIMI GLASSMORPHISM DESIGN SYSTEM
+   ============================================ */
+
+/* Background Utama: Gradasi Hijau Emerald yang Mewah */
+.bg-chalimi-gradient {
+    background: radial-gradient(circle at top left, #34d399, transparent 40%),
+        radial-gradient(circle at bottom right, #009b77, transparent 40%),
+        #ecfdf5;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Glass Panel - Light (untuk konten utama) */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+    box-shadow: 0 8px 40px rgba(0, 155, 119, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Glass Panel - Dark (untuk sidebar/header) */
+.glass-panel-dark {
+    background: rgba(6, 78, 59, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    color: white;
+}
+
+/* Glass Input Fields */
+.glass-input {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    outline: none;
+    border-color: #009b77;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 3px rgba(0, 155, 119, 0.1);
+}
+
+/* Status Badge - Glassmorphism */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.status-lunas {
+    background: rgba(16, 185, 129, 0.2);
+    color: #047857;
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.status-belum-lunas {
+    background: rgba(239, 68, 68, 0.2);
+    color: #991b1b;
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Button Glassmorphism */
+.btn-glass {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Button */
+.btn-chalimi {
+    background: linear-gradient(135deg, #009b77, #10b981);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 155, 119, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-chalimi:hover {
+    box-shadow: 0 6px 25px rgba(0, 155, 119, 0.4);
+    transform: scale(1.02);
+}
+
+/* Decorative Blur Orbs */
+.blur-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.blur-orb-green {
+    background: #34d399;
+}
+
+.blur-orb-emerald {
+    background: #009b77;
+}
+
+/* Smooth Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Card Hover Effect */
+.card-interactive {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-interactive:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 12px 40px rgba(0, 155, 119, 0.2);
+}

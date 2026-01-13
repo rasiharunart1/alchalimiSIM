@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@import "./glassmorphism.css";
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Custom Glassmorphism Utilities */
+body {
+    background-color: #064e3b;
+    /* chalimi-900 */
+    /* Mesh Gradient Background - Deep Dark Emerald */
+    background-image:
+        radial-gradient(at 0% 0%, rgba(6, 95, 70, 0.8) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(4, 120, 87, 0.6) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(2, 44, 34, 0.8) 0px, transparent 50%);
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-arabic {
+    font-family: 'Amiri', serif;
+}
+
+/* Dark Glassmorphism Defaults */
+.glass-panel {
+    background: rgba(10, 40, 30, 0.75);
+    /* Darker Green/Black tint */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
+    color: #f3f4f6;
+    /* gray-100 text default */
+}
+
+.glass-panel-dark {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-input {
+    background: rgba(0, 0, 0, 0.3);
+    /* Dark input background */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    /* White text */
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.glass-input::placeholder {
+    color: #9ca3af;
+    /* gray-400 */
+}
+
+.glass-input:focus {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: #34d399;
+    /* chalimi-400 */
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+    outline: none;
+}
+
+/* Chip Filter Active State */
+.chip-active {
+    background-color: #34d399;
+    /* Lighter emerald for visibility */
+    color: #064e3b;
+    /* Dark text on light button */
+    border-color: #34d399;
+}
+
+.btn-glass {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 0.75rem;
+    transition: all 0.3s;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    color: #e5e7eb;
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.btn-chalimi {
+    background: linear-gradient(135deg, #059669, #047857);
+    /* emerald-600 to emerald-700 */
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.btn-chalimi:hover {
+    background: linear-gradient(135deg, #10b981, #059669);
+    /* emerald-500 to emerald-600 */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px -3px rgba(4, 120, 87, 0.4);
+}
+
+/* Hide scrollbar for clean UI */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 155, 119, 0.3);
+    border-radius: 10px;
+}
