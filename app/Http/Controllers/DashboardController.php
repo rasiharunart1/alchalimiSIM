@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Santri;
 use App\Models\Pembayaran;
+use App\Models\UnitUsaha;
+use App\Models\Hafalan;
 
 class DashboardController extends Controller
 {
@@ -15,9 +17,31 @@ class DashboardController extends Controller
     {
         $totalSantri = Santri::aktif()->count();
         $totalPembayaran = Pembayaran::konfirmasi()->bulanIni()->sum('jumlah');
-        // $totalTunggakan = ... (Complex query, placeholder for now)
+        $totalKhatam = Santri::where('status', 'alumni')->count();
+        $totalUnitUsaha = UnitUsaha::count();
+        
+        // Progress Santri: Jumlah setoran hafalan bulan ini
+        $totalHafalanBulanIni = Hafalan::whereMonth('tanggal', now()->month)
+            ->whereYear('tanggal', now()->year)
+            ->count();
 
-        return view('admin.dashboard', compact('totalSantri', 'totalPembayaran'));
+        // Ranking Santri: Top 5 berdasarkan jumlah hafalan 'lulus'
+        $santriRanking = Santri::aktif()
+            ->withCount(['hafalan' => function($query) {
+                $query->where('status', 'lulus');
+            }])
+            ->orderBy('hafalan_count', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'totalSantri', 
+            'totalPembayaran', 
+            'totalKhatam', 
+            'totalUnitUsaha', 
+            'totalHafalanBulanIni', 
+            'santriRanking'
+        ));
     }
 
     /**

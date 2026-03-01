@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -91,6 +89,15 @@ class User extends Authenticatable
     {
         return $this->role === 'pengurus';
     }
+
+    /**
+     * Check if user is alumni
+     */
+    public function isAlumni()
+    {
+        return $this->role === 'alumni';
+    }
+
     /**
      * Relationship: User (Ustadz) has many Hafalan input
      */
@@ -105,5 +112,23 @@ class User extends Authenticatable
     public function isOnline()
     {
         return $this->last_seen && $this->last_seen->diffInMinutes(now()) < 5;
+    }
+
+    /**
+     * Get the user's photo URL
+     */
+    public function getPhotoUrlAttribute()
+    {
+        if (!$this->photo) {
+            return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=009b77&color=fff';
+        }
+        
+        // Jika photo sudah lengkap dengan folder
+        if (str_contains($this->photo, 'profile-photos/')) {
+            return asset('storage/' . $this->photo);
+        }
+        
+        // Jika photo hanya nama file
+        return asset('storage/profile-photos/' . $this->photo);
     }
 }

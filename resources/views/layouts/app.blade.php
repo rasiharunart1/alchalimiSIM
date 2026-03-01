@@ -12,6 +12,12 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Alpine.js & Global Styles -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col">
     
@@ -30,6 +36,86 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex gap-6 items-center font-medium text-sm">
             @auth
+                <!-- Dashboard Link -->
+                @php
+                    $dashboardRoute = match(auth()->user()->role) {
+                        'admin' => 'admin.dashboard',
+                        'wali_santri' => 'wali.dashboard',
+                        'ustadz' => 'ustadz.dashboard',
+                        'pengurus' => 'pengurus.dashboard',
+                        'alumni' => 'welcome',
+                        default => 'welcome'
+                    };
+                @endphp
+                <a href="{{ route($dashboardRoute) }}" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/10 text-white transition">
+                    <i class="fa-solid fa-gauge-high text-chalimi-300"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Notifications -->
+                <div class="relative" x-data="{ 
+                    open: false, 
+                    unreadCount: {{ auth()->user()->unreadNotifications->count() }},
+                    notifications: [],
+                    async fetchNotifications() {
+                        try {
+                            const res = await fetch('{{ route('notifications.fetch') }}');
+                            const data = await res.json();
+                            this.unreadCount = data.unreadCount;
+                            this.notifications = data.notifications;
+                        } catch (e) {
+                            console.error('Notification fetch failed', e);
+                        }
+                    }
+                }" x-init="fetchNotifications(); setInterval(() => fetchNotifications(), 2000)">
+                    <button @click="open = !open" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/10 text-white transition relative">
+                        <i class="fa-solid fa-bell text-chalimi-300"></i>
+                        <template x-if="unreadCount > 0">
+                            <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white border-2 border-[#004d40]" x-text="unreadCount">
+                            </span>
+                        </template>
+                    </button>
+
+                    <!-- Notification Dropdown -->
+                    <div x-show="open" @click.away="open = false" 
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 translateY-4"
+                        x-transition:enter-end="opacity-100 translateY-0"
+                        class="absolute right-0 mt-3 w-80 glass-panel-dark z-50 p-2 border border-white/10 shadow-2xl animate-fade-in-up"
+                        x-cloak>
+                        <div class="px-3 py-2 border-b border-white/10 flex justify-between items-center">
+                            <span class="text-xs font-bold text-white uppercase tracking-wider">Notifikasi</span>
+                            <template x-if="unreadCount > 0">
+                                <form action="{{ route('notifications.markAllRead') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="text-[10px] text-chalimi-300 hover:underline">Tandai semua dibaca</button>
+                                </form>
+                            </template>
+                        </div>
+                        <div class="max-h-96 overflow-y-auto custom-scrollbar">
+                            <template x-for="n in notifications" :key="n.id">
+                                <a :href="n.data.url || '#'" class="block p-3 rounded-lg hover:bg-white/5 transition border-b border-white/5 last:border-0" :class="n.read_at ? 'opacity-60' : ''">
+                                    <div class="flex gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-chalimi-600/20 flex items-center justify-center text-xl shrink-0">
+                                            <i class="fa-solid text-sm text-chalimi-400" :class="n.data.icon || 'fa-bell'"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-white" x-text="n.data.title"></p>
+                                            <p class="text-[10px] text-gray-400 mt-0.5 line-clamp-2" x-text="n.data.message"></p>
+                                            <p class="text-[9px] text-chalimi-500 mt-1 uppercase" x-text="n.created_at_human"></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </template>
+                            
+                            <div x-show="notifications.length === 0" class="p-8 text-center">
+                                <i class="fa-solid fa-bell-slash text-white/20 text-3xl mb-3 block"></i>
+                                <p class="text-xs text-gray-400">Belum ada notifikasi baru</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Role Badge -->
                 <span class="px-3 py-1 bg-white/10 text-chalimi-200 rounded-full text-xs font-bold border border-white/20 uppercase">
                     {{ str_replace('_', ' ', auth()->user()->role) }}
@@ -40,11 +126,14 @@
                         <p class="text-xs font-bold text-white hover:text-chalimi-200 transition">{{ auth()->user()->name }}</p>
                         <button type="button" onclick="event.stopPropagation(); openLogoutModal()" class="text-xs text-red-400 hover:text-red-300 hover:underline">Logout</button>
                     </div>
-                    <img src="{{ auth()->user()->photo ? asset('storage/'.auth()->user()->photo) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=009b77&color=fff' }}" class="w-9 h-9 rounded-full shadow-sm hover:scale-110 transition border border-white/20">
+                    <img src="{{ auth()->user()->photo_url }}" class="w-9 h-9 rounded-full shadow-sm hover:scale-110 transition border border-white/20">
                 </div>
             @else
                 <a href="/" class="hover:text-chalimi-300 transition text-white">Beranda</a>
                 <a href="{{ route('unit_usaha.public') }}" class="hover:text-chalimi-300 transition text-white">Unit Usaha</a>
+                <a href="{{ route('register') }}" class="px-5 py-2 glass-panel text-white hover:bg-white/10 transition border-white/20 border">
+                    Daftar
+                </a>
                 <a href="{{ route('login') }}" class="px-5 py-2 bg-chalimi-600 hover:bg-chalimi-700 text-white rounded-full transition shadow-lg shadow-chalimi-500/30">
                     Login App
                 </a>
@@ -65,7 +154,7 @@
                 <!-- Sidebar (Adapted from User Mockup) -->
                 <aside id="sidebar-menu" class="w-full md:w-64 glass-panel p-4 flex-col gap-2 h-fit md:sticky md:top-24 hidden md:flex transition-all duration-300">
                     <div class="flex items-center gap-3 p-4 mb-4 border-b border-white/10">
-                        <img src="{{ auth()->user()->photo ? asset('storage/'.auth()->user()->photo) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=009b77&color=fff' }}" class="w-10 h-10 rounded-full object-cover">
+                        <img src="{{ auth()->user()->photo_url }}" class="w-10 h-10 rounded-full object-cover">
                         <div class="overflow-hidden">
                             <h4 class="font-bold text-sm truncate text-white">{{ auth()->user()->name }}</h4>
                             <p class="text-xs text-chalimi-300 truncate">{{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }}</p>
@@ -119,7 +208,11 @@
                         <a href="{{ route('admin.hafalan.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition {{ request()->routeIs('admin.hafalan.*') ? 'bg-white/10 text-chalimi-300' : 'text-gray-300 hover:bg-white/5' }}">
                             <i class="fa-solid fa-book-quran w-5 text-center"></i> Hafalan
                         </a>
-                        <a href="{{ route('admin.settings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition {{ request()->routeIs('admin.settings.*') ? 'bg-white/10 text-chalimi-300' : 'text-gray-300 hover:bg-white/5' }}">
+                        <a href="{{ route('admin.tokens.index') }}" class="flex items-center gap-3 p-3 rounded-lg {{ request()->routeIs('admin.tokens.*') ? 'bg-chalimi-600 text-white shadow-lg' : 'text-chalimi-700 hover:bg-chalimi-50' }} transition">
+                            <i class="fa-solid fa-key w-5"></i>
+                            <span class="font-medium">Token Alumni</span>
+                        </a>
+                        <a href="{{ route('admin.settings.index') }}" class="flex items-center gap-3 p-3 rounded-lg {{ request()->routeIs('admin.settings.*') ? 'bg-chalimi-600 text-white shadow-lg' : 'text-chalimi-700 hover:bg-chalimi-50' }} transition">
                             <i class="fa-solid fa-gears w-5 text-center"></i> Pengaturan
                         </a>
                     @elseif(auth()->user()->isWali())
@@ -187,7 +280,7 @@
  
      <!-- Footer -->
      <footer class="mt-auto py-6 text-center text-sm text-chalimi-300/60 font-medium">
-         &copy; {{ date('Y') }} Developed by NH MEDIA x AL CHALIMI MEDIA. All rights reserved.
+         &copy; {{ date('Y') }} Developed by @rasiharunart. All rights reserved.
      </footer>
 
      <!-- Mobile Guest Navigation Menu -->
@@ -206,6 +299,9 @@
             Unit Usaha
         </a>
         <div class="border-t border-white/10 my-1"></div>
+        <a href="{{ route('register') }}" class="flex items-center gap-2 justify-center px-4 py-3 glass-panel text-white rounded-xl text-base font-bold transition border-white/10">
+            <i class="fa-solid fa-user-plus"></i> Daftar Akun
+        </a>
         <a href="{{ route('login') }}" class="flex items-center gap-2 justify-center px-4 py-3 bg-chalimi-600 hover:bg-chalimi-500 text-white rounded-xl text-base font-bold shadow-lg shadow-chalimi-600/20 transition transform active:scale-95">
             <i class="fa-solid fa-right-to-bracket"></i> Login Aplikasi
         </a>
@@ -298,6 +394,19 @@
                 modal.classList.add('hidden');
             }, 300);
         }
+     </script>
+     <script async src="https://www.instagram.com/embed.js"></script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.instgrm) {
+                window.instgrm.Embeds.process();
+            }
+        });
+        window.addEventListener('load', function() {
+            if (window.instgrm) {
+                window.instgrm.Embeds.process();
+            }
+        });
      </script>
  </body>
 </html>

@@ -28,6 +28,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Unit Usaha (Read for all, Create/Edit for Admin via gate/middleware check in controller or route)
     Route::get('/unit-usaha', [App\Http\Controllers\UnitUsahaController::class, 'index'])->name('unit_usaha.index');
+    // Notifications
+    Route::post('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/{id}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markRead');
+    Route::get('/notifications/fetch', [App\Http\Controllers\NotificationController::class, 'fetch'])->name('notifications.fetch');
 });
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -66,6 +70,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // User Management
     Route::resource('users', App\Http\Controllers\UserController::class);
+
+    // Alumni Token Management
+    Route::get('tokens', [App\Http\Controllers\AlumniTokenController::class, 'index'])->name('tokens.index');
+    Route::post('tokens', [App\Http\Controllers\AlumniTokenController::class, 'store'])->name('tokens.store');
+    Route::delete('tokens/{token}', [App\Http\Controllers\AlumniTokenController::class, 'destroy'])->name('tokens.destroy');
 
     // Settings
     Route::get('/settings', [App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');

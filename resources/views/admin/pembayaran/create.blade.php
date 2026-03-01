@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="mb-6 animate-fade-in-up">
-        <a href="{{ route('pembayaran.index') }}" class="text-chalimi-600 hover:text-chalimi-800 mb-2 inline-block">← Kembali ke Data Pembayaran</a>
+        <a href="{{ route('admin.pembayaran.index') }}" class="text-chalimi-600 hover:text-chalimi-800 mb-2 inline-block">← Kembali ke Data Pembayaran</a>
         <h2 class="text-2xl font-bold text-chalimi-900">Catat Pembayaran Baru</h2>
     </div>
 
     <div class="glass-panel p-8 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.1s">
-        <form action="{{ route('pembayaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route('admin.pembayaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             
             <!-- Santri Selection -->
@@ -71,7 +71,7 @@
             </div>
 
             <div class="pt-6 flex justify-end gap-3 border-t border-chalimi-100">
-                <a href="{{ route('pembayaran.index') }}" class="btn-glass bg-white/50 text-chalimi-700">Batal</a>
+                <a href="{{ route('admin.pembayaran.index') }}" class="btn-glass bg-white/50 text-chalimi-700">Batal</a>
                 <button type="submit" class="btn-chalimi shadow-lg shadow-emerald-500/30">
                     💾 Simpan Transaksi
                 </button>

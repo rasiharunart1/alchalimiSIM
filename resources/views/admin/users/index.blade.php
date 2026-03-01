@@ -25,6 +25,7 @@
                     <option value="ustadz" {{ request('role') == 'ustadz' ? 'selected' : '' }}>Ustadz</option>
                     <option value="pengurus" {{ request('role') == 'pengurus' ? 'selected' : '' }}>Pengurus</option>
                     <option value="wali_santri" {{ request('role') == 'wali_santri' ? 'selected' : '' }}>Wali Santri</option>
+                    <option value="alumni" {{ request('role') == 'alumni' ? 'selected' : '' }}>Alumni</option>
                 </select>
             </div>
             <button type="submit" class="btn-glass bg-chalimi-600 text-white hover:bg-chalimi-700">
@@ -66,6 +67,7 @@
                                         'ustadz' => 'bg-emerald-100 text-emerald-700',
                                         'pengurus' => 'bg-blue-100 text-blue-700',
                                         'wali_santri' => 'bg-orange-100 text-orange-700',
+                                        'alumni' => 'bg-teal-100 text-teal-700',
                                         default => 'bg-gray-100 text-gray-700'
                                     };
                                 @endphp

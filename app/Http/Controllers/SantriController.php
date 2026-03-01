@@ -50,6 +50,7 @@ class SantriController extends Controller
     {
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
+            'nama_panggilan' => 'nullable|string|max:255',
             'nis' => 'required|string|unique:santri,nis',
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'required|string',
@@ -57,16 +58,19 @@ class SantriController extends Controller
             'alamat' => 'required|string',
             'wali_id' => 'required|exists:users,id',
             'tanggal_masuk' => 'required|date',
+            'sekolah_asal' => 'nullable|string|max:255',
             'foto' => 'nullable|image|max:2048'
         ]);
 
+        $data = $request->all();
+
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('santri-photos', 'public');
+            $data['foto'] = $request->file('foto')->store('santri-photos', 'public');
         }
 
-        Santri::create($validated);
+        Santri::create($data);
 
-        return redirect()->route('santri.index')->with('success', 'Data santri berhasil ditambahkan');
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan');
     }
 
     /**
@@ -94,26 +98,30 @@ class SantriController extends Controller
     {
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
+            'nama_panggilan' => 'nullable|string|max:255',
             'nis' => 'required|string|unique:santri,nis,' . $santri->id,
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
             'wali_id' => 'required|exists:users,id',
+            'sekolah_asal' => 'nullable|string|max:255',
             'status' => 'required|in:aktif,alumni,keluar',
             'foto' => 'nullable|image|max:2048'
         ]);
+
+        $data = $request->all();
 
         if ($request->hasFile('foto')) {
             if ($santri->foto) {
                 Storage::disk('public')->delete($santri->foto);
             }
-            $validated['foto'] = $request->file('foto')->store('santri-photos', 'public');
+            $data['foto'] = $request->file('foto')->store('santri-photos', 'public');
         }
 
-        $santri->update($validated);
+        $santri->update($data);
 
-        return redirect()->route('santri.index')->with('success', 'Data santri berhasil diperbarui');
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diperbarui');
     }
 
     /**
@@ -127,7 +135,7 @@ class SantriController extends Controller
         
         $santri->delete();
 
-        return redirect()->route('santri.index')->with('success', 'Data santri berhasil dihapus');
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
     public function importForm()
@@ -169,7 +177,7 @@ class SantriController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('santri.index')->with('success', 'Import data santri berhasil');
+            return redirect()->route('admin.santri.index')->with('success', 'Import data santri berhasil');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan saat import: ' . $e->getMessage());

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use App\Models\User;
+use App\Notifications\GeneralNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,11 +50,21 @@ class ChatController extends Controller
             'body' => 'required'
         ]);
 
-        Message::create([
+        $message = Message::create([
             'sender_id' => Auth::id(),
             'receiver_id' => $request->receiver_id,
             'body' => $request->body
         ]);
+
+        // Notify receiver
+        $receiver = User::find($request->receiver_id);
+        $receiver->notify(new GeneralNotification([
+            'icon' => 'fa-comment',
+            'title' => 'Pesan Baru',
+            'message' => 'Anda menerima pesan dari ' . Auth::user()->name,
+            'url' => route('messages.show', Auth::id()),
+            'category' => 'chat'
+        ]));
 
         return back();
     }

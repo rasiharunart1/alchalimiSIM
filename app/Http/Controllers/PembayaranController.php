@@ -198,7 +198,7 @@ class PembayaranController extends Controller
     public function destroy(Pembayaran $pembayaran)
     {
         $pembayaran->delete();
-        return redirect()->route('pembayaran.index')->with('success', 'Data pembayaran dihapus');
+        return redirect()->route('admin.pembayaran.index')->with('success', 'Data pembayaran dihapus');
     }
 
     /**

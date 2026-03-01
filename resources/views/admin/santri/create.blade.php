@@ -22,6 +22,7 @@
                     <div>
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Nama Panggilan</label>
                         <input type="text" name="nama_panggilan" value="{{ old('nama_panggilan') }}" class="w-full glass-input">
+                        @error('nama_panggilan') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Nomor Induk Santri (NIS)</label>
@@ -35,18 +36,22 @@
                             <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
                         </select>
+                        @error('jenis_kelamin') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Tempat Lahir</label>
                         <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required class="w-full glass-input">
+                        @error('tempat_lahir') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Tanggal Lahir</label>
                         <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required class="w-full glass-input">
+                        @error('tanggal_lahir') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Alamat Lengkap</label>
                         <textarea name="alamat" rows="2" required class="w-full glass-input">{{ old('alamat') }}</textarea>
+                        @error('alamat') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>
@@ -58,10 +63,12 @@
                     <div>
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Tanggal Masuk</label>
                         <input type="date" name="tanggal_masuk" value="{{ old('tanggal_masuk') }}" required class="w-full glass-input">
+                        @error('tanggal_masuk') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Sekolah Asal</label>
                         <input type="text" name="sekolah_asal" value="{{ old('sekolah_asal') }}" class="w-full glass-input">
+                        @error('sekolah_asal') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Wali Santri (User Account)</label>
@@ -73,11 +80,13 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('wali_id') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                         <p class="text-xs text-chalimi-500 mt-1">Pastikan akun wali sudah dibuat terlebih dahulu di menu manajemen user.</p>
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-chalimi-700 mb-1">Foto Santri (Opsional)</label>
                         <input type="file" name="foto" accept="image/*" class="w-full glass-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-chalimi-50 file:text-chalimi-700 hover:file:bg-chalimi-100">
+                        @error('foto') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>

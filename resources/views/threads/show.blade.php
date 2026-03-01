@@ -40,10 +40,32 @@
         @endif
 
         @if($thread->instagram_url)
-            <div class="my-6 flex justify-center">
-                <blockquote class="instagram-media" data-instgrm-permalink="{{ $thread->instagram_url }}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
-                </blockquote>
-                <script async src="//www.instagram.com/embed.js"></script>
+            <div class="my-6">
+                {{-- Kartu Instagram CTA yang cantik --}}
+                <div class="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-6 rounded-2xl shadow-2xl">
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center space-y-4">
+                        <div class="flex justify-center">
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                <i class="fa-brands fa-instagram text-3xl bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 bg-clip-text text-transparent"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-lg mb-2">📸 Konten Instagram</h3>
+                            <p class="text-white/80 text-sm mb-4">Lihat postingan lengkap di Instagram</p>
+                        </div>
+                        <a href="{{ $thread->instagram_url }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                            Buka di Instagram
+                            <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                        </a>
+                        <p class="text-white/60 text-xs mt-3">
+                            <i class="fa-solid fa-info-circle"></i> Klik tombol di atas untuk melihat foto, video, dan komentar
+                        </p>
+                    </div>
+                </div>
             </div>
         @endif
 

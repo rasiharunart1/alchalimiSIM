@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="mb-6 animate-fade-in-up">
-        <a href="{{ route('users.index') }}" class="text-chalimi-600 hover:text-chalimi-800 mb-2 inline-block">← Kembali ke Manajemen User</a>
+        <a href="{{ route('admin.users.index') }}" class="text-chalimi-600 hover:text-chalimi-800 mb-2 inline-block">← Kembali ke Manajemen User</a>
         <h2 class="text-2xl font-bold text-chalimi-900">Tambah Pengguna Baru</h2>
     </div>
 
     <div class="glass-panel p-8 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.1s">
-        <form action="{{ route('users.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-6">
             @csrf
 
             <div>
@@ -37,6 +37,7 @@
                     <option value="pengurus" {{ old('role') == 'pengurus' ? 'selected' : '' }}>Pengurus (Humas/Keuangan)</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin Pondok</option>
                     <option value="wali_santri" {{ old('role') == 'wali_santri' ? 'selected' : '' }}>Wali Santri</option>
+                    <option value="alumni" {{ old('role') == 'alumni' ? 'selected' : '' }}>Alumni</option>
                 </select>
                 @error('role') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
             </div>
@@ -54,7 +55,7 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('users.index') }}" class="px-6 py-2 rounded-xl text-chalimi-600 hover:bg-chalimi-50 transition">Batal</a>
+                <a href="{{ route('admin.users.index') }}" class="px-6 py-2 rounded-xl text-chalimi-600 hover:bg-chalimi-50 transition">Batal</a>
                 <button type="submit" class="btn-chalimi shadow-lg shadow-emerald-500/30">
                     💾 Simpan Pengguna
                 </button>

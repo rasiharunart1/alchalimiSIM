@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="mb-6 animate-fade-in-up">
-        <a href="{{ route('users.index') }}" class="text-chalimi-600 hover:text-chalimi-800 mb-2 inline-block">← Kembali ke Manajemen User</a>
+        <a href="{{ route('admin.users.index') }}" class="text-chalimi-600 hover:text-chalimi-800 mb-2 inline-block">← Kembali ke Manajemen User</a>
         <h2 class="text-2xl font-bold text-chalimi-900">Edit Pengguna: {{ $user->name }}</h2>
     </div>
 
     <div class="glass-panel p-8 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.1s">
-        <form action="{{ route('users.update', $user) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.users.update', $user) }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -53,6 +53,7 @@
                         <option value="pengurus" {{ old('role', $user->role) == 'pengurus' ? 'selected' : '' }}>Pengurus (Humas/Keuangan)</option>
                         <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin Pondok</option>
                         <option value="wali_santri" {{ old('role', $user->role) == 'wali_santri' ? 'selected' : '' }}>Wali Santri</option>
+                        <option value="alumni" {{ old('role', $user->role) == 'alumni' ? 'selected' : '' }}>Alumni</option>
                     </select>
                 @endif
                 @error('role') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
@@ -76,7 +77,7 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('users.index') }}" class="px-6 py-2 rounded-xl text-chalimi-600 hover:bg-chalimi-50 transition">Batal</a>
+                <a href="{{ route('admin.users.index') }}" class="px-6 py-2 rounded-xl text-chalimi-600 hover:bg-chalimi-50 transition">Batal</a>
                 <button type="submit" class="btn-chalimi shadow-lg shadow-emerald-500/30">
                     💾 Simpan Perubahan
                 </button>

@@ -138,21 +138,53 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($unitUsahas as $unit)
-                <div class="glass-panel p-4 rounded-[2rem] border-white/60 border hover:shadow-xl transition group">
-                    <div class="aspect-square rounded-2xl overflow-hidden mb-4 relative shadow-inner">
-                        <img src="{{ asset('storage/'.$unit->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="{{ $unit->name }}">
-                        @if($unit->price > 0)
-                            <div class="absolute bottom-3 right-3 px-3 py-1 bg-chalimi-600 text-white rounded-lg text-sm font-bold shadow-lg">
-                                Rp {{ number_format($unit->price, 0, ',', '.') }}
+                <div class="glass-panel overflow-hidden group flex flex-col h-full">
+                    <div class="relative bg-chalimi-800/50">
+                        @if($unit->instagram_url)
+                            <div class="w-full flex items-center justify-center">
+                                <blockquote class="instagram-media" data-instgrm-permalink="{{ $unit->instagram_url }}" data-instgrm-version="14" style="width: 100%; border:0; margin:0; padding:0;">
+                                    <div style="padding:16px;"> 
+                                        <a href="{{ $unit->instagram_url }}" target="_blank" style="color: #666; font-family: sans-serif; font-size: 14px; text-decoration: none;">Loading Instagram...</a>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        @elseif($unit->image)
+                            <div class="h-64 overflow-hidden">
+                                <img src="{{ asset('storage/' . $unit->image) }}" alt="{{ $unit->name }}" class="w-full h-full object-cover">
+                            </div>
+                        @else
+                            <div class="flex items-center justify-center h-64 text-chalimi-200">
+                                <i class="fa-solid fa-store text-4xl opacity-20"></i>
+                            </div>
+                        @endif
+                        
+                        @if($unit->status !== 'available')
+                            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-10">
+                                <span class="px-4 py-2 bg-red-500 text-white text-xs font-bold rounded-full uppercase tracking-widest">
+                                    {{ $unit->status === 'out_of_stock' ? 'Habis' : 'Tutup' }}
+                                </span>
                             </div>
                         @endif
                     </div>
-                    <div class="px-2">
-                        <h4 class="font-bold text-chalimi-900 text-lg">{{ $unit->name }}</h4>
-                        <p class="text-xs text-chalimi-600 line-clamp-2 mt-1">{{ $unit->description }}</p>
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $unit->contact_number) }}" class="mt-4 flex items-center justify-center gap-2 w-full py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl text-sm font-bold transition shadow-md shadow-green-500/20">
-                            <i class="fa-brands fa-whatsapp"></i> Hubungi Toko
-                        </a>
+                    
+                    <div class="p-6 space-y-4 flex flex-col flex-grow">
+                        <div class="space-y-1">
+                            <h3 class="text-xl font-bold text-chalimi-900 line-clamp-1">{{ $unit->name }}</h3>
+                            <p class="text-chalimi-600 text-sm line-clamp-2">{{ $unit->description }}</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-2 mt-auto">
+                            @if($unit->show_price)
+                                <span class="text-2xl font-black text-chalimi-900">Rp {{ number_format($unit->price, 0, ',', '.') }}</span>
+                            @else
+                                <span class="text-sm font-bold text-chalimi-600 italic">Tanyakan Harga</span>
+                            @endif
+                            <a href="https://wa.me/{{ $unit->contact_number }}?text=Halo,%20saya%20tertarik%20dengan%20produk%20{{ urlencode($unit->name) }}{{ !$unit->show_price ? '.%20Boleh%20tahu%20harganya?' : '' }}" 
+                               target="_blank"
+                               class="w-12 h-12 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 transition-all transform hover:scale-110 active:scale-95">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -183,7 +215,7 @@
                 <div class="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x">
                     @foreach($galleryItems as $item)
                         <div class="min-w-[326px] max-w-[400px] snap-center bg-white rounded-2xl overflow-hidden shadow-xl">
-                            <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="{{ $item['permalink'] }}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:12px; margin: 1px; width:calc(100% - 2px);">
+                            <blockquote class="instagram-media" data-instgrm-permalink="{{ $item['permalink'] }}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:12px; margin: 1px; width:calc(100% - 2px);">
                                 <div style="padding:16px;">
                                     <a href="{{ $item['permalink'] }}" target="_blank" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;">
                                         <p style="color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px;">Loading post from Instagram...</p>
@@ -193,14 +225,6 @@
                         </div>
                     @endforeach
                 </div>
-                <script async src="https://www.instagram.com/embed.js"></script>
-                <script>
-                    window.addEventListener('load', function() {
-                        if (window.instgrm) {
-                            window.instgrm.Embeds.process();
-                        }
-                    });
-                </script>
             @else
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                     @forelse($galleryItems as $index => $item)
@@ -247,9 +271,6 @@
         </div>
 
     </section>
-
-    <!-- Instagram Embed Script -->
-    <script async src="//www.instagram.com/embed.js"></script>
 
     <style>
         .truncate-2-lines {

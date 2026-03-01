@@ -18,7 +18,7 @@
                     <div class="relative group">
                         <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-chalimi-100">
                             @if(auth()->user()->photo)
-                                <img src="{{ asset('storage/' . auth()->user()->photo) }}" id="preview-image" class="w-full h-full object-cover">
+                                <img src="{{ auth()->user()->photo_url }}" id="preview-image" class="w-full h-full object-cover">
                             @else
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=009b77&color=fff" id="preview-image" class="w-full h-full object-cover">
                             @endif

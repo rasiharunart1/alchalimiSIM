@@ -50,7 +50,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'in:admin,ustadz,pengurus,wali_santri'],
+            'role' => ['required', 'in:admin,ustadz,pengurus,wali_santri,alumni'],
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
@@ -62,7 +62,7 @@ class UserController extends Controller
             'phone' => $validated['phone'] ?? null,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan');
     }
 
     /**
@@ -81,7 +81,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'role' => ['required', 'in:admin,ustadz,pengurus,wali_santri'],
+            'role' => ['required', 'in:admin,ustadz,pengurus,wali_santri,alumni'],
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
@@ -99,7 +99,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'Data user diperbarui');
+        return redirect()->route('admin.users.index')->with('success', 'Data user diperbarui');
     }
 
     /**
@@ -112,6 +112,6 @@ class UserController extends Controller
         }
 
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus');
     }
 }
